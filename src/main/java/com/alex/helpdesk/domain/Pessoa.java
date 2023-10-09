@@ -1,22 +1,46 @@
 package com.alex.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.alex.helpdesk.domain.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-public abstract class Pessoa {
+@Entity(name = "Pessoa")
+public abstract class Pessoa implements Serializable {
+	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
+
 	protected String nome;
+
+	@Column(unique = true)
 	protected String cpf;
+	@Column(unique = true)
 	protected String email;
+
 	protected String senha;
-	protected Set<Integer> perfis = new HashSet<>(); // trabalha com lista de Perfis, evitando return null, e
-													// duplicidade.
+
+	@ElementCollection(fetch = FetchType.EAGER) // Lista vem junto na chamada de usuario
+	@CollectionTable(name = "PERFIS")
+	protected Set<Integer> perfis = new HashSet<>(); // trabalha com lista de Perfis, evitando return null/duplicidade
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataCriacao = LocalDate.now();
 
 	public Pessoa() {
