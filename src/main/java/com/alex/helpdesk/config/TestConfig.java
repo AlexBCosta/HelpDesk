@@ -10,7 +10,7 @@ import com.alex.helpdesk.services.DBServices;
 @Profile("test")
 public class TestConfig {
 
-	@Autowired //k
+	@Autowired //kkk
 	private DBServices dbServices;
 
 	public void instanciaDB() {
