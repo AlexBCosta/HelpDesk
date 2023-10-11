@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alex.helpdesk.domain.Cliente;
+import com.alex.helpdesk.domain.dtos.ClienteDTO;
 import com.alex.helpdesk.repositores.ClienteRepository;
 import com.alex.helpdesk.services.exceptions.ObjectnotFoundException;
 
@@ -23,5 +24,11 @@ public class ClienteService {
 
 	public List<Cliente> findAll() {
 		return repository.findAll();
+	}
+
+	public Cliente create(ClienteDTO objDTO) {
+		objDTO.setId(null);
+		Cliente newObj = new Cliente(objDTO);
+		return repository.save(newObj);
 	}
 }
