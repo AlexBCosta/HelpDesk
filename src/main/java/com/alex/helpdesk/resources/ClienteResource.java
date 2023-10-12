@@ -40,7 +40,7 @@ public class ClienteResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<List<ClienteDTO>> create(@RequestBody ClienteDTO obj) {
+	public ResponseEntity<ClienteDTO> create(@RequestBody ClienteDTO obj) {
 		Cliente newObj = service.create(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
