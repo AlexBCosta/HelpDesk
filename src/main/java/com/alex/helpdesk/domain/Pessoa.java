@@ -18,6 +18,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.alex.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -35,6 +37,7 @@ public abstract class Pessoa implements Serializable {
 
 	@NotNull(message = "O campo CPF é obrigatório!")
 	@NotBlank(message = "O campo CPF é obrigatório!")
+	@CPF
 	@Column(unique = true)
 	protected String cpf;
 

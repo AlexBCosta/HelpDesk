@@ -3,6 +3,8 @@ package com.alex.helpdesk.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,13 @@ public class TecnicoService {
 			throw new DataIntegrityViolationException("E-mail ja existe cadastrado!");
 		}
 
+	}
+
+	public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
+		objDTO.setId(id); //dto recebe o mesmo id dos parametro seg
+		Tecnico oldObj = findById(id);
+		verificaCpfEEmail(objDTO);
+		oldObj = new Tecnico(objDTO);
+		return repository.save(oldObj);
 	}
 }

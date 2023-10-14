@@ -3,6 +3,8 @@ package com.alex.helpdesk.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repository;
-	
+
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
@@ -48,5 +50,13 @@ public class ClienteService {
 		if (obj.isPresent() && obj.get().getId() != objDTO.getId()) {
 			throw new DataIntegrityViolationException("E-mail ja existente!");
 		}
+	}
+
+	public Cliente update(Integer id, @Valid ClienteDTO objDTO) {
+		objDTO.setId(id);
+		Cliente oldObj = findById(id);
+		verificaCpfEEmail(objDTO);
+		oldObj = new Cliente(objDTO);
+		return repository.save(oldObj);
 	}
 }
