@@ -25,6 +25,21 @@ public class ClienteService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
+	public Cliente create(ClienteDTO objDTO) {
+		objDTO.setId(null);
+		verificaCpfEEmail(objDTO);
+		Cliente newObj = new Cliente(objDTO);
+		return repository.save(newObj);
+	}
+
+	public Cliente update(Integer id, @Valid ClienteDTO objDTO) {
+		objDTO.setId(id);
+		Cliente oldObj = findById(id);
+		verificaCpfEEmail(objDTO);
+		oldObj = new Cliente(objDTO);
+		return repository.save(oldObj);
+	}
+
 	public Cliente findById(Integer id) {
 		Optional<Cliente> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectnotFoundException("Cliente não encontrado! Id: " + id));
@@ -32,13 +47,6 @@ public class ClienteService {
 
 	public List<Cliente> findAll() {
 		return repository.findAll();
-	}
-
-	public Cliente create(ClienteDTO objDTO) {
-		objDTO.setId(null);
-		verificaCpfEEmail(objDTO);
-		Cliente newObj = new Cliente(objDTO);
-		return repository.save(newObj);
 	}
 
 	private void verificaCpfEEmail(ClienteDTO objDTO) {
@@ -52,11 +60,12 @@ public class ClienteService {
 		}
 	}
 
-	public Cliente update(Integer id, @Valid ClienteDTO objDTO) {
-		objDTO.setId(id);
-		Cliente oldObj = findById(id);
-		verificaCpfEEmail(objDTO);
-		oldObj = new Cliente(objDTO);
-		return repository.save(oldObj);
+	public void delete(Integer id) {
+		Cliente obj = findById(id);
+		
+		if (obj.getChamados().size() > 0) {
+			throw new DataIntegrityViolationException("O cliente possui ordem de serviço. Não pode ser deletado!");
+		}
+		repository.deleteById(id);
 	}
 }

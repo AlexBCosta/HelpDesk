@@ -25,6 +25,22 @@ public class TecnicoService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
+	public Tecnico create(TecnicoDTO objDTO) {
+		objDTO.setId(null);
+		verificaCpfEEmail(objDTO);
+		Tecnico newObj = new Tecnico(objDTO);
+		return repository.save(newObj);
+
+	}
+
+	public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
+		objDTO.setId(id); // dto recebe o mesmo id dos parametro seg
+		Tecnico oldObj = findById(id);
+		verificaCpfEEmail(objDTO);
+		oldObj = new Tecnico(objDTO);
+		return repository.save(oldObj);
+	}
+
 	public Tecnico findById(Integer id) {
 		Optional<Tecnico> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectnotFoundException("Tecnico não encontrado! Id: " + id));
@@ -32,14 +48,6 @@ public class TecnicoService {
 
 	public List<Tecnico> findAll() {
 		return repository.findAll();
-	}
-
-	public Tecnico create(TecnicoDTO objDTO) {
-		objDTO.setId(null);
-		verificaCpfEEmail(objDTO);
-		Tecnico newObj = new Tecnico(objDTO);
-		return repository.save(newObj);
-
 	}
 
 	private void verificaCpfEEmail(TecnicoDTO objDTO) {
@@ -56,11 +64,12 @@ public class TecnicoService {
 
 	}
 
-	public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
-		objDTO.setId(id); //dto recebe o mesmo id dos parametro seg
-		Tecnico oldObj = findById(id);
-		verificaCpfEEmail(objDTO);
-		oldObj = new Tecnico(objDTO);
-		return repository.save(oldObj);
+	public void delete(Integer id) {
+		Tecnico obj = findById(id);
+
+		if (obj.getChamados().size() > 0) {
+			throw new DataIntegrityViolationException("O tecnico possui ordem de serviço. Não pode ser deletado!");
+		}
+		repository.deleteById(id);
 	}
 }
