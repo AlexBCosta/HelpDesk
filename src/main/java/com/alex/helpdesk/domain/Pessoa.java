@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.alex.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -27,19 +29,28 @@ public abstract class Pessoa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 
+	@NotBlank(message = "o Campo  NOME deve ser preenchido!")
+	@NotNull(message = "O campo NOME é obrigatório!")
 	protected String nome;
 
+	@NotNull(message = "O campo CPF é obrigatório!")
+	@NotBlank(message = "O campo CPF é obrigatório!")
 	@Column(unique = true)
 	protected String cpf;
+
+	@NotNull(message = "O campo EMAIL é obrigatório!")
+	@NotBlank(message = "O campo EMAIL é obrigatório!")
 	@Column(unique = true)
 	protected String email;
 
+	@NotNull(message = "O campo SENHA é obrigatório!")
+	@NotBlank(message = "O campo SENHA é obrigatório!")
 	protected String senha;
 
 	@ElementCollection(fetch = FetchType.EAGER) // Lista vem junto na chamada de usuario
 	@CollectionTable(name = "PERFIS")
 	protected Set<Integer> perfis = new HashSet<>(); // trabalha com lista de Perfis, evitando return null/duplicidade
-	
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataCriacao = LocalDate.now();
 
