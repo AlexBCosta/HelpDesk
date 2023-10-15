@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.alex.helpdesk.domain.enums.Prioridade;
 import com.alex.helpdesk.domain.enums.Status;
@@ -26,9 +28,12 @@ public class Chamado implements Serializable {
 	private LocalDate dataAbertura = LocalDate.now();
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataFechamento;
-	
+	@NotNull(message = "O campo Prioridade é obrigatório!")
 	private Prioridade prioridade;
+	@NotNull(message = "O campo Status é obrigatório!")
 	private Status status;
+	@NotNull(message = "O campo Titulo é obrigatório!")
+	@NotBlank(message = "O campo Titulo deve ser preechido")
 	private String titulo;
 	private String observacoes;
 
