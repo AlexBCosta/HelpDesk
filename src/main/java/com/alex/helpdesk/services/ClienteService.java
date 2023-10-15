@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.alex.helpdesk.domain.Cliente;
@@ -25,8 +26,12 @@ public class ClienteService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
+	@Autowired
+	private BCryptPasswordEncoder encode;
+
 	public Cliente create(ClienteDTO objDTO) {
 		objDTO.setId(null);
+		objDTO.setSenha(encode.encode(objDTO.getSenha()));
 		verificaCpfEEmail(objDTO);
 		Cliente newObj = new Cliente(objDTO);
 		return repository.save(newObj);
@@ -62,7 +67,7 @@ public class ClienteService {
 
 	public void delete(Integer id) {
 		Cliente obj = findById(id);
-		
+
 		if (obj.getChamados().size() > 0) {
 			throw new DataIntegrityViolationException("O cliente possui ordem de serviço. Não pode ser deletado!");
 		}
