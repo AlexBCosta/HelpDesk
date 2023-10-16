@@ -28,7 +28,7 @@ public abstract class Pessoa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//subir
 	protected Integer id;
 
 	@NotBlank(message = "o Campo  NOME deve ser preenchido!")
