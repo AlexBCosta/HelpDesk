@@ -25,7 +25,7 @@ import com.alex.helpdesk.services.ChamadoService;
 @RestController
 @RequestMapping(value = "/chamados")
 public class ChamadoResource implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L; //chamados
 
 	@Autowired
 	private ChamadoService service;
