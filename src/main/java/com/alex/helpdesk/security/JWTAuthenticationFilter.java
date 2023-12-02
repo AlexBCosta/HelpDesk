@@ -51,7 +51,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String username = ((UserSS) authResult.getPrincipal()).getUsername();
 		String token = jwtUtil.generateToken(username);
 
-		response.setHeader("access-control-expose-headers", "Authorization");
+		response.setHeader("access-control-expose-headers", "Authorization");//a PESTIRICA
 		response.setHeader("Authorization", "Bearer " + token);
 
 	}

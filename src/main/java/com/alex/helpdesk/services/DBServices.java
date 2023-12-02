@@ -39,7 +39,7 @@ public class DBServices {
 		Tecnico tec2 = new Tecnico(null, "ze roela", "788.185.750-15", "teste@gmail.com", encoder.encode("teste"));
 		tec1.addPerfil(Perfil.TECNICO);
 
-		Cliente cli1 = new Cliente(null, "Alex Costa", "629.565.690-07", "alex.b.costa28@gmail.com", encoder.encode("Abelhudo"));
+		Cliente cli1 = new Cliente(null, "Alex Costa", "629.565.690-07", "alex.b.costa28@gmail.com", encoder.encode("123"));
 		cli1.addPerfil(Perfil.ADMIN);
 
 		Chamado cha1 = new Chamado(null, Prioridade.ALTA, Status.ANDAMENTO, "Chamado 01", "Primeiro Chamado", tec1,
